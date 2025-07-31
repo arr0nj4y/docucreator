@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Document Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: calc(100% - 22px); /* Account for padding and border */
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+
+        textarea {
+            resize: vertical; /* Allow vertical resizing only */
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .responsibility-item, .program-item {
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .responsibility-item input, .program-item input {
+            flex: 1; /* Distribute space evenly */
+            min-width: 150px; /* Ensure inputs don't get too small */
+            margin-bottom: 0; /* Remove bottom margin from inputs within these containers */
+        }
+
+        .responsibility-item button, .program-item button {
+            flex-shrink: 0; /* Prevent button from shrinking */
+            margin-top: 0;
+            padding: 8px 12px;
+            background-color: #dc3545; /* Red for remove buttons */
+        }
+
+        .responsibility-item button:hover, .program-item button:hover {
+            background-color: #c82333;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ccc;
+            margin: 40px 0;
+        }
+
+        h2, h3 {
+            color: #0056b3;
+        }
+
+        #outputDocument {
+            margin-top: 30px;
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            font-family: 'Courier New', Courier, monospace; /* Monospace for document output */
+            white-space: pre-wrap; /* Preserve whitespace and wrap text */
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Event Document Generator</h2>
+    <p>This form will help you generate a draft document for your event. Fill in the details below, and we'll format them for you!</p>
+
+    <form id="eventForm">
+
+        <h3>Event Details</h3>
+
+        <label for="eventDate">Date/s of Activity:</label>
+        <input type="text" id="eventDate" placeholder="e.g., August 25, 2025" required>
+
+        <label for="eventVenue">Venue:</label>
+        <input type="text" id="eventVenue" placeholder="e.g., Main Auditorium, ABC University" required>
+
+        <label for="eventPartners">Partners (internal and external):</label>
+        <textarea id="eventPartners" rows="3" placeholder="e.g., ABC Environmental Group, Student Council, Barangay XYZ"></textarea>
+
+        <hr>
+
+        <h3>Rationale and Outcomes</h3>
+
+        <label for="eventRationale">Rationale:</label>
+        <textarea id="eventRationale" rows="5" placeholder="Brief explanation of the need or purpose for conducting the activity." required></textarea>
+
+        <label for="expectedOutcomes">Expected Outcomes (one per line):</label>
+        <textarea id="expectedOutcomes" rows="5" placeholder="e.g., Raise awareness on sustainable practices&#10;Encourage community participation"></textarea>
+
+        <hr>
+
+        <h3>Provisions</h3>
+
+        <label for="eventProvisions">Logistical and Material Requirements:</label>
+        <textarea id="eventProvisions" rows="5" placeholder="e.g., sound system, chairs, printed materials, meals for 50 participants"></textarea>
+
+        <hr>
+
+        <h3>Shared Responsibilities</h3>
+
+        <p>Add responsibility tasks and who is responsible:</p>
+        <div id="responsibilitiesContainer">
+            <div class="responsibility-item">
+                <input type="text" class="responsibility-task" placeholder="Task e.g., Venue Setup">
+                <input type="text" class="responsibility-party" placeholder="Responsible Party e.g., [Partner A]">
+                <button type="button" class="remove-responsibility">Remove</button>
+            </div>
+        </div>
+        <button type="button" id="addResponsibility">Add Another Responsibility</button>
+
+        <hr>
+
+        <h3>Program Flow</h3>
+
+        <p>Add program schedule details:</p>
+        <div id="programFlowContainer">
+            <div class="program-item">
+                <input type="text" class="program-time" placeholder="Time e.g., 8:00 AM">
+                <input type="text" class="program-activity" placeholder="Activity e.g., Registration">
+                <input type="text" class="program-pic" placeholder="Person-in-Charge e.g., Secretariat">
+                <button type="button" class="remove-program">Remove</button>
+            </div>
+        </div>
+        <button type="button" id="addProgramItem">Add Another Program Item</button>
+
+        <hr>
+
+        <h3>Evaluation Method</h3>
+
+        <label for="evaluationMethod">Evaluation Form/Method:</label>
+        <textarea id="evaluationMethod" rows="3" placeholder="e.g., A short feedback survey will be distributed to participants to assess the quality and relevance of the event."></textarea>
+
+        <hr>
+
+        <h3>Contact Information</h3>
+
+        <label for="yourName">Your Name:</label>
+        <input type="text" id="yourName" required>
+
+        <label for="designation">Designation:</label>
+        <input type="text" id="designation" required>
+
+        <label for="organization">Organization:</label>
+        <input type="text" id="organization" required>
+
+        <label for="emailAddress">Email Address:</label>
+        <input type="email" id="emailAddress" required>
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="tel" id="phoneNumber" required>
+
+        <hr>
+
+        <button type="submit">Generate Document</button>
+    </form>
+
+    <hr>
+    <h3>Generated Document Output:</h3>
+    <textarea id="outputDocument" rows="30" readonly style="display: none;"></textarea> <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventForm = document.getElementById('eventForm');
+            const responsibilitiesContainer = document.getElementById('responsibilitiesContainer');
+            const addResponsibilityBtn = document.getElementById('addResponsibility');
+            const programFlowContainer = document.getElementById('programFlowContainer');
+            const addProgramItemBtn = document.getElementById('addProgramItem');
+            const outputDocumentArea = document.getElementById('outputDocument');
+
+            // --- Dynamic Responsibility Fields ---
+            function addResponsibilityField() {
+                const div = document.createElement('div');
+                div.classList.add('responsibility-item');
+                div.innerHTML = `
+                    <input type="text" class="responsibility-task" placeholder="Task e.g., Venue Setup">
+                    <input type="text" class="responsibility-party" placeholder="Responsible Party e.g., [Partner A]">
+                    <button type="button" class="remove-responsibility">Remove</button>
+                `;
+                responsibilitiesContainer.appendChild(div);
+                div.querySelector('.remove-responsibility').addEventListener('click', () => div.remove());
+            }
+
+            addResponsibilityBtn.addEventListener('click', addResponsibilityField);
+            // Initial remove listener for the first item (if it exists)
+            if (responsibilitiesContainer.querySelector('.remove-responsibility')) {
+                responsibilitiesContainer.querySelector('.remove-responsibility').addEventListener('click', (e) => e.target.closest('.responsibility-item').remove());
+            }
+
+            // --- Dynamic Program Flow Fields ---
+            function addProgramItemField() {
+                const div = document.createElement('div');
+                div.classList.add('program-item');
+                div.innerHTML = `
+                    <input type="text" class="program-time" placeholder="Time e.g., 8:00 AM">
+                    <input type="text" class="program-activity" placeholder="Activity e.g., Registration">
+                    <input type="text" class="program-pic" placeholder="Person-in-Charge e.g., Secretariat">
+                    <button type="button" class="remove-program">Remove</button>
+                `;
+                programFlowContainer.appendChild(div);
+                div.querySelector('.remove-program').addEventListener('click', () => div.remove());
+            }
+
+            addProgramItemBtn.addEventListener('click', addProgramItemField);
+            // Initial remove listener for the first item (if it exists)
+            if (programFlowContainer.querySelector('.remove-program')) {
+                programFlowContainer.querySelector('.remove-program').addEventListener('click', (e) => e.target.closest('.program-item').remove());
+            }
+
+
+            // --- Form Submission Logic ---
+            eventForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent default form submission
+
+                const date = document.getElementById('eventDate').value;
+                const venue = document.getElementById('eventVenue').value;
+                const partners = document.getElementById('eventPartners').value;
+                const rationale = document.getElementById('eventRationale').value;
+                const outcomes = document.getElementById('expectedOutcomes').value.split('\n').filter(line => line.trim() !== '');
+                const provisions = document.getElementById('eventProvisions').value;
+
+                const responsibilities = [];
+                document.querySelectorAll('.responsibility-item').forEach(item => {
+                    const task = item.querySelector('.responsibility-task').value;
+                    const party = item.querySelector('.responsibility-party').value;
+                    if (task || party) { // Only add if at least one field is filled
+                        responsibilities.push({ task, party });
+                    }
+                });
+
+                const programFlow = [];
+                document.querySelectorAll('.program-item').forEach(item => {
+                    const time = item.querySelector('.program-time').value;
+                    const activity = item.querySelector('.program-activity').value;
+                    const pic = item.querySelector('.program-pic').value;
+                    if (time || activity || pic) { // Only add if at least one field is filled
+                        programFlow.push({ time, activity, pic });
+                    }
+                });
+
+                const evaluationMethod = document.getElementById('evaluationMethod').value;
+                const yourName = document.getElementById('yourName').value;
+                const designation = document.getElementById('designation').value;
+                const organization = document.getElementById('organization').value;
+                const emailAddress = document.getElementById('emailAddress').value;
+                const phoneNumber = document.getElementById('phoneNumber').value;
+
+                // Construct the document string
+                let docContent = `II. Date\n${date}\n`;
+                docContent += `III. Venue\n${venue}\n`;
+                docContent += `IV. Partners\n${partners}\n`;
+                docContent += `V. Rationale and Outcomes\nRationale:\n\n${rationale}\nExpected Outcomes:\n\n`;
+                outcomes.forEach(outcome => {
+                    docContent += `${outcome}\n`;
+                });
+                docContent += `VI. Provisions\n${provisions}\n`;
+
+                docContent += `\nVII. Shared Responsibilities\n`;
+                if (responsibilities.length > 0) {
+                    docContent += `Task\tResponsible Party\n`; // Add header if responsibilities exist
+                    responsibilities.forEach(resp => {
+                        docContent += `${resp.task}\t${resp.party}\n`;
+                    });
+                } else {
+                    docContent += `[No shared responsibilities listed]\n`;
+                }
+
+
+                docContent += `\nVIII. Program Flow\n`;
+                if (programFlow.length > 0) {
+                    docContent += `Time\tActivity\tPerson-in-Charge\n`; // Add header if program flow exists
+                    programFlow.forEach(prog => {
+                        docContent += `${prog.time}\t${prog.activity}\t${prog.pic}\n`;
+                    });
+                } else {
+                    docContent += `[No program flow details listed]\n`;
+                }
+
+
+                docContent += `\nIX. Evaluation Form\n${evaluationMethod}\n`;
+                docContent += `\nWe look forward to your support and participation. Should you have any inquiries, please feel free to reach out to us at ${emailAddress}.\n`;
+                docContent += `Thank you for your attention.\nSincerely,\n${yourName}\n\n${designation}\n\n${organization}\n\n${emailAddress}\n\n${phoneNumber}`;
+
+                // Display the output in the textarea
+                outputDocumentArea.value = docContent;
+                outputDocumentArea.style.display = 'block'; // Make it visible
+
+                // Optional: Scroll to the output area
+                outputDocumentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>
